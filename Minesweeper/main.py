@@ -1,5 +1,6 @@
 from tkinter import *
 from cell import Cell
+from board import Board
 import settings
 import utils
 
@@ -41,7 +42,7 @@ center_frame.place(
 )
 
 # TO-DO: Create grid with x rows and y columns
-utils.create_grid(row = 0, column = 0)
+Board.create_grid(rows = 0, columns = 0, mines = 0)
 
 # Run the window
 root.mainloop()
