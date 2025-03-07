@@ -1,4 +1,5 @@
 from cell import Cell
+import random
 
 class Board:
     def __init__(self, rows, cols, mines):
@@ -6,21 +7,21 @@ class Board:
         self.cols = cols
         self.mines = mines
         self.grid = [[0 for _ in range(cols)] for _ in range(rows)]
-        self.create_grid(rows, cols, mines)
+        self.create_grid()
 
     # TO-DO: Complete function
     # Function to create the grid of cells
-    def create_grid(self, rows, cols, mines):
-        self.place_mines(0)
+    def create_grid(self):
+        self.place_mines()
         self.calculate_number()
         self.print_grid()
 
     # TO-DO: Complete function
     # Function to randomly generate mines position
     '''
-    Index = 9 to cell so that the mine is placed at that cell.
+    if that cell has mines, place '*' 
     '''
-    def place_mines(self, mine_counts):
+    def place_mines(self):
         pass
 
     # TO-DO: Complete function
@@ -38,5 +39,9 @@ class Board:
     def print_grid(self):
         for row in self.grid:
             for col in row:
-                print(col, end=" ")
+                print(col, end="  ")
             print()
+
+if __name__ == '__main__':
+    board = Board(10, 10, 10)
+    board.print_grid()
