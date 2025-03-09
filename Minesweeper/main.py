@@ -42,7 +42,8 @@ center_frame.place(
 )
 
 # TO-DO: Create grid with x rows and y columns
-Board.create_grid(rows = 0, columns = 0, mines = 0)
+board = Board(10, 10, 10)
+board.create_grid()
 
 # Run the window
 root.mainloop()
