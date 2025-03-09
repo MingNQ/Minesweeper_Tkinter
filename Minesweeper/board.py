@@ -41,7 +41,3 @@ class Board:
             for col in row:
                 print(col, end="  ")
             print()
-
-if __name__ == '__main__':
-    board = Board(10, 10, 10)
-    board.print_grid()

@@ -3,7 +3,7 @@ import random
 import time
 
 class Minesweeper:
-    def __init__(self, root, rows=10, cols=10, mines=10):
+    def __init__(self, root, rows=19, cols=30, mines=99):
         self.root = root
         self.rows = rows
         self.cols = cols
@@ -14,13 +14,14 @@ class Minesweeper:
         self.create_widgets()
         self.place_mines()
         self.calculate_numbers()
-        self.ai_play()
+        # self.ai_play()
 
     def create_widgets(self):
         for r in range(self.rows):
             for c in range(self.cols):
                 btn = tk.Button(self.root, width=2, height=1, command=lambda r=r, c=c: self.reveal_cell(r, c))
                 btn.grid(row=r, column=c)
+                btn.bind("<Button-3>", lambda event, r=r, c=c: self.toggle_flag(r, c))
                 self.buttons[r][c] = btn
 
     def place_mines(self):
@@ -43,7 +44,7 @@ class Minesweeper:
             self.buttons[r][c].config(text='*', bg='red')
             self.game_over()
         else:
-            self.buttons[r][c].config(text=str(self.board[r][c]), state=tk.DISABLED)
+            self.buttons[r][c].config(text=str(self.board[r][c] if self.board[r][c] != 0 else ''), bg='#bdbdbd', fg='blue', state=tk.DISABLED)
             if self.board[r][c] == 0:
                 self.reveal_neighbors(r, c)
 
@@ -52,6 +53,13 @@ class Minesweeper:
             for nc in range(c-1, c+2):
                 if 0 <= nr < self.rows and 0 <= nc < self.cols and self.buttons[nr][nc]['state'] != tk.DISABLED:
                     self.reveal_cell(nr, nc)
+
+    def toggle_flag(self, r, c):
+        btn = self.buttons[r][c]
+        if btn["text"] == "":
+            btn.config(text="🚩", fg="blue", state=tk.DISABLED)
+        elif btn["text"] == "🚩":
+            btn.config(text="", state=tk.ACTIVE)
 
     def game_over(self):
         for r, c in self.mine_positions:
