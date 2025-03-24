@@ -25,11 +25,13 @@ class Minesweeper:
                 self.buttons[r][c] = btn
 
     def place_mines(self):
-        while len(self.mine_positions) < self.mines:
+        while len(self.mine_positions) < self.mines - 1:
             r, c = random.randint(0, self.rows - 1), random.randint(0, self.cols - 1)
             if (r, c) not in self.mine_positions:
                 self.mine_positions.add((r, c))
                 self.board[r][c] = -1
+        self.mine_positions.add((0, 0))
+        self.board[0][0] = -1
 
     def calculate_numbers(self):
         for r in range(self.rows):
@@ -40,6 +42,7 @@ class Minesweeper:
                 self.board[r][c] = count
 
     def reveal_cell(self, r, c):
+        self.buttons[r][c].config(bg = "green")
         if (r, c) in self.mine_positions:
             self.buttons[r][c].config(text='*', bg='red')
             self.game_over()
@@ -89,4 +92,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Minesweeper")
     game = Minesweeper(root)
+    game.ai_play()
     root.mainloop()

@@ -1,3 +1,11 @@
-WIDTH = 1440
-HEIGHT = 720
+# Window
+WIDTH = 500
+HEIGHT = 320
 GRID_SIZE = 6
+
+# Colors
+GRAY = '#cccccc'
+LIGHT_GRAY = '#d4d4d4'
+QUITE_GRAY = '#535353'
+LIGHT_BLACK = '#151515'
+QUITE_WHITE = '#f2f2f2'

@@ -4,46 +4,93 @@ from board import Board
 import settings
 import utils
 
-# Create a new window
+class Minesweeper:
+    def __init__(self, root):
+        self.root = root
+        self.root.configure(bg = "black") # Change background color
+        self.root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
+        self.root.title('Minesweeper Game') # Set title for the window
+        self.root.resizable(False, False) # Unresizable the window 
+        self.time_elapsed = 0
+        self.board = Board(0, 0, 0)
+        self.create_window()
+
+    # Create the window with all components
+    def create_window(self):
+        self.create_top_bar() # Top bar
+        line = Frame(
+            self.root, 
+            bg = settings.LIGHT_BLACK,
+            height=1)
+        line.pack(fill=X) # Divide part
+        self.create_main_frame() # Main frame
+
+    # Top frame
+    def create_top_bar(self):
+        top_frame = Frame(
+            self.root,
+            bg = settings.LIGHT_GRAY,
+            height = 64
+        )
+        top_frame.pack(fill=X)
+
+        # Time Counter Label
+        self.time_label = Label(
+            top_frame, 
+            text = '000',
+            font = ('Arial', 14),
+            fg = settings.QUITE_WHITE,
+            bg = settings.QUITE_GRAY)
+        self.time_label.pack(side=LEFT, padx=10, pady=(8, 8))
+        self.update_timer()
+
+        # Setting Button
+        self.setting_icon = PhotoImage(file='./assets/setting_icon.png')
+        self.setting_icon = self.setting_icon.subsample(3, 3)
+        self.setting_button = Button(
+            top_frame,
+            image = self.setting_icon,
+            bg = settings.LIGHT_GRAY,
+            borderwidth=1
+        )
+        self.setting_button.pack(side=RIGHT, padx=10, pady=(8, 8))
+
+        # Flag Counter Label
+        self.flag_label = Label(
+            top_frame, 
+            text = f'{self.board.mines:03d}',
+            font = ('Arial', 14),
+            fg = settings.QUITE_WHITE,
+            bg = settings.QUITE_GRAY)
+        self.flag_label.pack(side=RIGHT, padx=10, pady=(8, 8))
+        self.update_flags()
+
+    # Time Counter
+    def update_timer(self):
+        minutes = self.time_elapsed // 60
+        seconds = self.time_elapsed % 60
+        self.time_label.config(
+            text = f'{minutes}:{seconds:02d}'
+        )
+        self.time_elapsed += 1
+        self.root.after(1000, self.update_timer)
+
+    # Flags Counter
+    def update_flags(self):
+        self.flag_label.config(
+            text = f'{self.board.mines:03d}'
+        )
+
+    # Main frame
+    def create_main_frame(self):
+        center_frame = Frame(
+            self.root, 
+            bg = settings.GRAY,
+            height = utils.width_percentage(75)
+        )
+        center_frame.pack(fill=BOTH, expand=True)
+
+# Main
 root = Tk()
-root.configure(bg="black") # Change background color
-root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
-root.title('Minesweeper Game') # Set title for the window
-root.resizable(False, False) # Unresizable the window 
-
-# Top frame
-top_frame = Frame(
-    root,
-    bg="black",
-    width=settings.WIDTH,
-    height=utils.height_percentage(25) 
-)
-top_frame.place(x=0, y=0)
-
-# Lef frame
-left_frame = Frame(
-    root, 
-    bg='black',
-    width=utils.width_percentage(25),
-    height=utils.width_percentage(75)
-)
-left_frame.place(x=0, y=utils.height_percentage(25))
-
-# Center frame
-center_frame = Frame(
-    root, 
-    bg='black',
-    width=utils.width_percentage(75),
-    height=utils.width_percentage(75)
-)
-center_frame.place(
-    x=utils.width_percentage(25), 
-    y=utils.height_percentage(25)
-)
-
-# TO-DO: Create grid with x rows and y columns
-board = Board(10, 10, 10)
-board.create_grid()
-
-# Run the window
+app = Minesweeper(root)
 root.mainloop()
