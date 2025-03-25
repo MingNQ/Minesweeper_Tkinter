@@ -2,36 +2,28 @@ from cell import Cell
 import random
 
 class Board:
-    def __init__(self, rows, cols, mines):
+    def __init__(self, root, rows, cols, mines):
+        self.root = root
         self.rows = rows
         self.cols = cols
         self.mines = mines
-        self.grid = [[0 for _ in range(cols)] for _ in range(rows)]
-        self.create_grid()
+        self.grid = [[None for _ in range(cols)] for _ in range(rows)]
 
     # TO-DO: Complete function
     # Function to create the grid of cells
     def create_grid(self):
+        # TO-DO: create the grid of cells
+        
         self.place_mines()
-        self.calculate_number()
-        self.print_grid()
+        self.calculate_number() 
 
     # TO-DO: Complete function
     # Function to randomly generate mines position
-    '''
-    if that cell has mines, place '*' 
-    '''
     def place_mines(self):
         pass
 
     # TO-DO: Complete function
     # Funtion to indexing number on per cell
-    '''
-    index = 0 if no mine in 8 cell nearly
-    index = 1 if 1 mine in 8 cell nearly
-    v..v..
-    index = n if n mines in 8 cell nearly 
-    '''
     def calculate_number(self):
         pass
 

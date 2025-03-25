@@ -8,11 +8,11 @@ class Minesweeper:
     def __init__(self, root):
         self.root = root
         self.root.configure(bg = "black") # Change background color
-        self.root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
+        # self.root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
         self.root.title('Minesweeper Game') # Set title for the window
         self.root.resizable(False, False) # Unresizable the window 
         self.time_elapsed = 0
-        self.board = Board(0, 0, 0)
+        self.board = Board(None, 16, 30, 99)
         self.create_window()
 
     # Create the window with all components
@@ -89,6 +89,8 @@ class Minesweeper:
             height = utils.width_percentage(75)
         )
         center_frame.pack(fill=BOTH, expand=True)
+        self.board.root = center_frame
+        self.board.create_grid()
 
 # Main
 root = Tk()
