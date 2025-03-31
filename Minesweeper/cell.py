@@ -13,8 +13,7 @@ class Cell:
             self.root,
             bg = settings.QUITE_GRAY,
             width = 2,
-            height = 1,
-            text='0'
+            height = 1
         )
         btn.grid(row=r, column=c)
         btn.bind('<Button-1>', self.left_click_actions) # <Button-1> = left click
@@ -28,3 +27,6 @@ class Cell:
     # Right click event
     def right_click_actions(self, event):   
         pass
+
+    def __str__(self):
+        return self.cell_btn_object.cget("text")
