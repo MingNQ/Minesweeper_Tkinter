@@ -12,7 +12,7 @@ class Minesweeper:
         self.root.title('Minesweeper Game') # Set title for the window
         self.root.resizable(False, False) # Unresizable the window 
         self.time_elapsed = 0
-        self.board = Board(None, 16, 30, 99)
+        self.board = Board(None, 16, 30, 99) # FOR TESTING
         self.create_window()
 
     # Create the window with all components
