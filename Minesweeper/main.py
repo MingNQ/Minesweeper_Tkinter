@@ -4,11 +4,35 @@ from board import Board
 import settings
 import utils
 
+class Home:
+    def __init__(self, root):
+        self.root = root
+        self.root.title('Minesweeper Game') # Set title for the window
+        self.root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
+        self.root.resizable(False, False) # Unresizable the window 
+        
+        self.create_home_ui()
+    
+    def create_home_ui(self):
+        self.app_icon = PhotoImage(file='./assets/app_logo.png')
+        self.app_icon = self.app_icon.subsample(1, 1)
+
+        app_logo_label = Label(self.root, image=self.app_icon)
+        app_logo_label.pack(pady=52)
+
+        title_label = Label(self.root, text="MINESWEEPER", font=("Arial", 24), fg="white")
+        title_label.pack(pady=5)
+
+        play_button = Button(self.root, text="Play", font=("Arial", 14), width=15)
+        play_button.pack(pady=40)
+
+        credit_button = Button(self.root, text="Credit", font=("Arial", 14), width=15)
+        credit_button.pack(pady=10)
+
 class Minesweeper:
     def __init__(self, root):
         self.root = root
         self.root.configure(bg = "black") # Change background color
-        # self.root.geometry(f'{settings.WIDTH}x{settings.HEIGHT}') # Size of the window
         self.root.title('Minesweeper Game') # Set title for the window
         self.root.resizable(False, False) # Unresizable the window 
         self.time_elapsed = 0
@@ -93,6 +117,8 @@ class Minesweeper:
         self.board.create_grid()
 
 # Main
-root = Tk()
-app = Minesweeper(root)
-root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    home = Home(root)
+    # app = Minesweeper(root)
+    root.mainloop()

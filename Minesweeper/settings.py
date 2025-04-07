@@ -1,6 +1,6 @@
 # Window
 WIDTH = 500
-HEIGHT = 320
+HEIGHT = 600
 GRID_SIZE = 6
 
 # Colors
