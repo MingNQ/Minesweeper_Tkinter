@@ -7,12 +7,23 @@ import utils
 class Minesweeper: 
     def __init__(self, root):
         self.root = root
+        self.board = Board(None, 16, 30, 99) # FOR TESTING
+        self.time_elapsed = 0
+        self.create_window()
+
+    def reload_winfo(self):
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()
+
         self.root.configure(bg = settings.BLACK) # Change background color
         self.root.title('Minesweeper Game') # Set title for the window
         self.root.resizable(False, False) # Unresizable the window 
-        self.time_elapsed = 0
-        self.board = Board(None, 16, 30, 99) # FOR TESTING
-        self.create_window()
+        self.root.overrideredirect(True) # Remove title bar
+        self.root.update_idletasks() # Update the window to get the correct size
+
+        x = utils.center_width(self.screen_width, self.root.winfo_width())
+        y = utils.center_height(self.screen_height, self.root.winfo_height())
+        self.root.geometry(f'{self.root.winfo_width()}x{self.root.winfo_height()}+{x}+{y}')
 
     # Create the window with all components
     def create_window(self):
@@ -26,6 +37,7 @@ class Minesweeper:
         line.pack(fill=X) 
 
         self.create_main_frame() # Main frame
+        self.reload_winfo() # Reload window info
 
     # Top frame
     def create_top_bar(self):
@@ -96,14 +108,23 @@ class Minesweeper:
 
     # Setting Command
     def setting_onclick(self):
+        x = utils.center_width(self.screen_width, settings.SETTING_DIALOG_WIDTH)
+        y = utils.center_height(self.screen_height, settings.SETTING_DIALOG_HEIGHT)
+
         setting_dialog = Toplevel()
         setting_dialog.overrideredirect(True)
-        setting_dialog.geometry(f'{settings.SETTING_DIALOG_WIDTH}x{settings.SETTING_DIALOG_HEIGHT}')
+        setting_dialog.geometry(f'{settings.SETTING_DIALOG_WIDTH}x{settings.SETTING_DIALOG_HEIGHT}+{x}+{y}')
         setting_dialog.configure(bg=settings.GRAY)
         setting_dialog.grab_set()
 
          # Title
-        label_title = Label(setting_dialog, text=settings.ST0, font=("Arial", 14, "bold"), fg=settings.LIGHT_BLACK, anchor='w', bg=settings.GRAY)
+        label_title = Label(
+            setting_dialog, 
+            text=settings.ST0, 
+            font=("Arial", 14, "bold"), 
+            fg=settings.LIGHT_BLACK, 
+            anchor='center', 
+            bg=settings.GRAY)
         label_title.pack(fill=X, padx=20, pady=(8, 8))
 
         # Button MODE play

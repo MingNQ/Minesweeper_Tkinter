@@ -21,7 +21,6 @@ class Board:
         
         self.place_mines()
         self.calculate_number() 
-        # self.print_grid()
 
     # TO-DO: Complete function
     # Function to randomly generate mines position
