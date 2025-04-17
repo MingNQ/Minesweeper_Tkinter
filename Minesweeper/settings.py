@@ -6,6 +6,9 @@ GRID_SIZE = 6
 DIALOG_WIDTH = 600
 DIALOG_HEIGHT = 195
 
+SETTING_DIALOG_WIDTH = 400
+SETTING_DIALOG_HEIGHT = 400
+
 # Strings
 APP_NAME = "MINESWEEPER"
 
@@ -25,6 +28,12 @@ HT3 = "3. Nếu ô được mở không có số (nghĩa là không mìn lân c�
 HT4 = "4. Người chơi có thể cắm cờ vào ô nghi ngờ có mìn để đánh dấu."
 HT5 = "5. Trò chơi chiến thắng khi các ô không phải bom được mở và các ô là bom được đánh dấu."
 
+# For Setting Screen
+ST0 = "SETTING"
+ST1 = "MODE"
+ST2 = "CONTINUE"
+ST3 = "EXIT"
+
 # Colors
 BLACK = "#000000"
 GRAY = '#cccccc'
@@ -33,4 +42,3 @@ LIGHT_GRAY = '#d4d4d4'
 QUITE_GRAY = '#535353'
 LIGHT_BLACK = '#151515'
 QUITE_WHITE = '#f2f2f2'
-

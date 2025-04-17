@@ -1,10 +1,7 @@
-from cell import Cell
-import settings
-
 # Calculate the height
-def height_percentage(percentage):
-    return (settings.HEIGHT / 100) * percentage
+def center_height(window_height, height):
+    return (window_height - height) // 2
 
 # Calculate the width
-def width_percentage(percentage):
-    return (settings.WIDTH / 100) * percentage
+def center_width(window_width, width):
+    return (window_width - width) // 2
