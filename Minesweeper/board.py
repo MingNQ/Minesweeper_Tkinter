@@ -33,6 +33,26 @@ class Board:
     index = n if n mines in 8 cell nearly 
     '''
     def calculate_number(self):
+        directions = [(-1, -1), (-1, 0), (-1, 1),  # Top left,Top,Top right
+                      (0, -1), (0, 1),  # left , right
+                      (1, -1), (1, 0), (1, 1)
+                      ]
+        for row in range(self.rows):
+            for col in range(self.cols):
+                # Bỏ qua nếu ô đó là bom
+                if self.grid[row][col] == '*':
+                    continue
+                mine_count = 0
+                #Duyệt qua từng hướng trong danh sách Directions
+                for dr,dc in directions:
+                    #nr= hàng của ô lân cận, nc = cột của ô lân cận
+                    nr,nc = row+dr,col+dc
+                    # Kiểm tra xem tọa độ (nr,nc) có nằm trong các ô lân cận không
+                    if 0<=nr<self.rows and 0<=nc<self.cols:
+                        if self.grid[nr][nc]=='*':
+                            mine_count+=1
+                #Đánh dấu số
+                self.grid[row][col] = str(mine_count)
         pass
 
     # Print the grid
