@@ -2,6 +2,9 @@ from tkinter import Button
 import settings
 
 class Cell:
+    CELL_WIDTH = 2
+    CELL_HEIGHT = 1
+
     def __init__(self, root, is_mine = False):
         self.is_mine = is_mine
         self.root = root
@@ -12,8 +15,8 @@ class Cell:
         btn = Button(
             self.root,
             bg = settings.QUITE_GRAY,
-            width = 2,
-            height = 1
+            width = Cell.CELL_WIDTH,
+            height = Cell.CELL_HEIGHT
         )
         btn.grid(row=r, column=c)
         btn.bind('<Button-1>', self.left_click_actions) # <Button-1> = left click
