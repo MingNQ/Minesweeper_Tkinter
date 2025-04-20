@@ -38,6 +38,7 @@ ST3 = "EXIT"
 BLACK = "#000000"
 GRAY = '#cccccc'
 WHITE = "#ffffff"
+RED = "#ff0000"
 LIGHT_GRAY = '#d4d4d4'
 QUITE_GRAY = '#535353'
 LIGHT_BLACK = '#151515'

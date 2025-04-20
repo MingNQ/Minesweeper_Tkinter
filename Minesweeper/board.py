@@ -1,5 +1,7 @@
 from cell import Cell
+import tkinter
 import random
+import settings
 
 class Board:
     def __init__(self, root, rows, cols, mines):
@@ -9,19 +11,22 @@ class Board:
         self.mines = mines
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
         self.mines_position = set()
+        self.directions = [(-1, -1), (-1, 0), (-1, 1),  # Top left,Top,Top right
+                            (0, -1), (0, 1),  # left , right
+                            (1, -1), (1, 0), (1, 1)
+                        ]
 
-    # TO-DO: Complete function
     # Function to create the grid of cells
     def create_grid(self):
         for r in range(self.rows):
             for c in range(self.cols):
                 cell = Cell(self.root)
                 cell.create_button_object(r, c)
+                cell.cell_btn_object.config(command=lambda r=r, c=c: self.reveal_cell(r, c))
                 self.grid[r][c] = cell
         
         self.place_mines()
-        self.calculate_number() 
-        # self.print_grid()
+        # self.calculate_number() 
 
     # TO-DO: Complete function
     # Function to randomly generate mines position
@@ -29,13 +34,8 @@ class Board:
         # self.grid[1][1].cell_btn_object.config(text="2")
         pass
 
-    # TO-DO: Complete function
     # Funtion to indexing number on per cell
     def calculate_number(self):
-        directions = [(-1, -1), (-1, 0), (-1, 1),  # Top left,Top,Top right
-                      (0, -1), (0, 1),  # left , right
-                      (1, -1), (1, 0), (1, 1)
-                      ]
         for row in range(self.rows):
             for col in range(self.cols):
                 # Bỏ qua nếu ô đó là bom
@@ -43,7 +43,7 @@ class Board:
                     continue
                 mine_count = 0
                 #Duyệt qua từng hướng trong danh sách Directions
-                for dr,dc in directions:
+                for dr,dc in self.directions:
                     #nr= hàng của ô lân cận, nc = cột của ô lân cận
                     nr,nc = row+dr,col+dc
                     # Kiểm tra xem tọa độ (nr,nc) có nằm trong các ô lân cận không
@@ -51,7 +51,16 @@ class Board:
                         if self.grid[nr][nc]=='*':
                             mine_count+=1
                 #Đánh dấu số
-                self.grid[row][col] = str(mine_count)
+                self.grid[row][col].value = str(mine_count)
+
+    # Reveal cell when clicked
+    def reveal_cell(self, row, col):
+        curr_cell = self.grid[row][col]
+        # TO-DO: Hanlde reveal cell
+
+    # Reveal adjecent cells
+    def reveal_neighbor(self, row, col):
+        # TO-DO: Handle reveal adjacent cells
         pass
 
     # Print the grid
