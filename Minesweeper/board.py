@@ -32,6 +32,12 @@ class Board:
     # Function to randomly generate mines position
     def place_mines(self):
         # self.grid[1][1].cell_btn_object.config(text="2")
+        while len(self.mines_position) < self.mines:
+            r = random.randint(0, self.rows - 1)
+            c = random.randint(0, self.cols - 1)
+            if(r, c) not in self.mines_position:
+                self.mines_position.add((r, c))
+                self.grid[r][c] = '*'
         pass
 
     # Funtion to indexing number on per cell
