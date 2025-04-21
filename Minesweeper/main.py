@@ -74,9 +74,9 @@ class Home:
 
     # Mode Player play
     def player_play(self):
-        # self.root.withdraw() # Hide home screen
-        game_screen = Toplevel()
-        app = minesweeper.Minesweeper(game_screen)
+        self.root.withdraw() # Hide home screen
+        self.game_screen = Toplevel()
+        minesweeper.Minesweeper(self.game_screen, on_close = self.root.deiconify)
 
     # Show Guide dialog Command
     def show_how_to_dialog(self):

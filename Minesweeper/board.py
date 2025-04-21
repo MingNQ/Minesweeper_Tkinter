@@ -26,9 +26,8 @@ class Board:
                 self.grid[r][c] = cell
         
         self.place_mines()
-        # self.calculate_number() 
+        self.calculate_number() 
 
-    # TO-DO: Complete function
     # Function to randomly generate mines position
     def place_mines(self):
         # self.grid[1][1].cell_btn_object.config(text="2")
@@ -37,15 +36,15 @@ class Board:
             c = random.randint(0, self.cols - 1)
             if(r, c) not in self.mines_position:
                 self.mines_position.add((r, c))
-                self.grid[r][c] = '*'
-        pass
+                self.grid[r][c].is_mine = True
+                self.grid[r][c].value = '*'
 
     # Funtion to indexing number on per cell
     def calculate_number(self):
         for row in range(self.rows):
             for col in range(self.cols):
                 # Bỏ qua nếu ô đó là bom
-                if self.grid[row][col] == '*':
+                if self.grid[row][col].is_mine:
                     continue
                 mine_count = 0
                 #Duyệt qua từng hướng trong danh sách Directions
@@ -54,7 +53,7 @@ class Board:
                     nr,nc = row+dr,col+dc
                     # Kiểm tra xem tọa độ (nr,nc) có nằm trong các ô lân cận không
                     if 0<=nr<self.rows and 0<=nc<self.cols:
-                        if self.grid[nr][nc]=='*':
+                        if self.grid[nr][nc].is_mine:
                             mine_count+=1
                 #Đánh dấu số
                 self.grid[row][col].value = str(mine_count)
