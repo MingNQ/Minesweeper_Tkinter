@@ -4,12 +4,15 @@ from board import Board
 import minesweeper
 import settings
 import utils
+import json
+import os
 
 class Home:
     def __init__(self, root):
         self.root = root
         self.initialize_window()
         self.create_home_ui()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
     # Initialize the window
     def initialize_window(self):
@@ -76,7 +79,9 @@ class Home:
     def player_play(self):
         # self.root.withdraw() # Hide home screen
         game_screen = Toplevel()
+        difficulty = self.read_difficulty()
         app = minesweeper.Minesweeper(game_screen)
+        game_screen.protocol("WM_DELETE_WINDOW", lambda: self.on_game_close(game_screen, app))
 
     # Show Guide dialog Command
     def show_how_to_dialog(self):
@@ -142,7 +147,74 @@ class Home:
         first_btn = Button(button_frame, text=settings.HT0_1, width=10, font=("Arial", 10), command=on_end)
         first_btn.pack(side=RIGHT, padx=15, pady=5)
 
-# Main
+    def on_close(self):
+        confirm = Toplevel(self.root)
+        x = utils.center_width(self.screen_width, settings.WIDTH)
+        y = utils.center_height(self.screen_height, settings.HEIGHT)
+        confirm.geometry(f"{settings.WIDTH}x{settings.HEIGHT}+{x}+{y}")
+        confirm.title("Confirm Exit")
+        confirm.configure(bg=settings.LIGHT_GRAY)
+        confirm.resizable(False, False)
+        confirm.grab_set()
+
+        main_frame = Frame(confirm, bg=settings.LIGHT_GRAY)
+        main_frame.pack(expand=True)
+
+        self.stop_icon = PhotoImage(file='./assets/stop.png')
+        self.stop_icon = self.stop_icon.subsample(3, 3)
+        icon_label = Label(main_frame, image=self.stop_icon, bg=settings.LIGHT_GRAY)
+        icon_label.pack(pady=(30, 30))
+
+        # Title
+        title_label = Label(
+            main_frame,
+            text="DO YOU WANNA PLAY WITH US MORE?",
+            font=("Arial", 14, "bold"),
+            fg=settings.QUITE_GRAY,
+            bg=settings.LIGHT_GRAY
+        )
+        title_label.pack(pady=(0, 40))
+
+        # Button YES
+        yes_btn = Button(
+            main_frame,
+            text="YES",
+            font=("Arial", 12, "bold"),
+            width=15,
+            fg=settings.QUITE_WHITE,
+            bg=settings.QUITE_GRAY,
+            command=self.root.destroy
+        )
+        yes_btn.pack(pady=15)
+
+        # Button NO
+        no_btn = Button(
+            main_frame,
+            text="NO",
+            font=("Arial", 12, "bold"),
+            width=15,
+            fg=settings.QUITE_WHITE,
+            bg=settings.QUITE_GRAY,
+            command=confirm.destroy
+        )
+        no_btn.pack(pady=15)
+
+    def read_difficulty(self):
+            if os.path.exists("difficulty.json"):
+                with open("difficulty.json", "r") as f:
+                    data = json.load(f)
+                    return data.get("difficulty", "medium")
+            return "medium"
+
+    def save_difficulty(self, difficulty):
+            with open("difficulty.json", "w") as f:
+                json.dump({"difficulty": difficulty}, f)
+
+    def on_game_close(self, game_screen, app):
+            self.save_difficulty(app.difficulty)
+            game_screen.destroy()
+
+    # Main
 if __name__ == '__main__':
     root = Tk()
     home = Home(root)

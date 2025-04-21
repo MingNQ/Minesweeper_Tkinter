@@ -5,11 +5,12 @@ import settings
 import utils
 
 class Minesweeper: 
-    def __init__(self, root):
+    def __init__(self, root, difficulty="medium"):
         self.root = root
         self.board = Board(None, 16, 30, 99) # FOR TESTING
         self.time_elapsed = 0
         self.create_window()
+        self.difficulty = difficulty
 
     def reload_winfo(self):
         self.screen_width = self.root.winfo_screenwidth()
