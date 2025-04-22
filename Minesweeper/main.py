@@ -56,7 +56,8 @@ class Home:
             font=("Arial", 14, "bold"), 
             width=15, 
             fg=settings.QUITE_WHITE, 
-            bg=settings.QUITE_GRAY
+            bg=settings.QUITE_GRAY,
+            command = self.bot_play
         )
         button_bot_play.pack(pady=20)
 
@@ -77,6 +78,11 @@ class Home:
         self.root.withdraw() # Hide home screen
         self.game_screen = Toplevel()
         minesweeper.Minesweeper(self.game_screen, on_close = self.root.deiconify)
+
+    def bot_play(self):
+        self.root.withdraw() # Hide home screen
+        self.game_screen = Toplevel()
+        app = minesweeper.Minesweeper(self.game_screen, auto_play = True, on_close = self.root.deiconify)
 
     # Show Guide dialog Command
     def show_how_to_dialog(self):

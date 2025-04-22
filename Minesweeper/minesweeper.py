@@ -6,8 +6,9 @@ import settings
 import utils
 
 class Minesweeper: 
-    def __init__(self, root, on_close = None):
+    def __init__(self, root, auto_play = False, on_close = None):
         self.root = root
+        self.auto_play = auto_play
         self.on_close = on_close
         self.difficulty_var = IntVar(value = 2)
         r, c, m = self.get_mode()
@@ -16,6 +17,9 @@ class Minesweeper:
         self.timer_id = None # Store the timer ID for cancellation
         self.create_window()
         self.root.protocol("WM_DELETE_WINDOW", self.exit_game) # Handle window close event
+
+        if self.auto_play:
+            self.root.after(1000, self.board.auto_play)
 
     def reload_winfo(self):
         # Get the screen width and height
@@ -132,6 +136,7 @@ class Minesweeper:
     # Setting Command
     def setting_onclick(self):
         self.pause_game()
+        self.board.auto_playing = False
 
         x = utils.center_width(self.screen_width, settings.SETTING_DIALOG_WIDTH)
         y = utils.center_height(self.screen_height, settings.SETTING_DIALOG_HEIGHT)
@@ -188,11 +193,13 @@ class Minesweeper:
         def on_select_mode():
             setting_dialog.destroy()
             self.select_mode_dialog()
+            self.board.auto_play()
 
         def on_continue():
             setting_dialog.destroy()
             self.update_timer()
-        
+            self.board.auto_play()
+            
         def on_exit():
             setting_dialog.destroy()
             self.exit_game()
@@ -211,6 +218,9 @@ class Minesweeper:
         self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.create_window()
         self.root.grab_set()
+
+        if self.auto_play:
+            self.root.after(1000, self.board.auto_play)
 
     # Game Finish
     def end_game(self, game_over = False):
@@ -307,6 +317,9 @@ class Minesweeper:
 
         self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.create_window()
+
+        if self.auto_play:
+            self.root.after(1000, self.board.auto_play)
 
     # Exit Game
     def exit_game(self):
