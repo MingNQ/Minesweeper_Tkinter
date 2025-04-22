@@ -3,7 +3,6 @@ import tkinter
 import random
 import settings
 
-
 class Board:
     def __init__(self, root, rows, cols, mines):
         self.root = root
@@ -15,8 +14,7 @@ class Board:
         self.directions = [(-1, -1), (-1, 0), (-1, 1),  # Top left,Top,Top right
                            (0, -1), (0, 1),  # left , right
                            (1, -1), (1, 0), (1, 1)
-                           ]
-
+                        ]
 
     # Function to create the grid of cells
     def create_grid(self):
@@ -30,17 +28,14 @@ class Board:
         self.place_mines()
         self.calculate_number()
 
-    # TO-DO: Complete function
     # Function to randomly generate mines position
     def place_mines(self):
-        # self.grid[1][1].cell_btn_object.config(text="2")
         while len(self.mines_position) < self.mines:
             r = random.randint(0, self.rows - 1)
             c = random.randint(0, self.cols - 1)
             if (r, c) not in self.mines_position:
                 self.mines_position.add((r, c))
                 self.grid[r][c].is_mine = True
-        pass
 
     # Funtion to indexing number on per cell
     def calculate_number(self):
@@ -48,7 +43,7 @@ class Board:
             for col in range(self.cols):
                 cell = self.grid[row][col]
                 # Bỏ qua nếu ô đó là bom
-                if self.grid[row][col].is_mine:
+                if cell.is_mine:
                     continue
                 mine_count = 0
                 # Duyệt qua từng hướng trong danh sách Directions
@@ -61,7 +56,6 @@ class Board:
                             mine_count += 1
                 # Đánh dấu số
                 cell.value = mine_count
-
 
     # Reveal cell when clicked
     def reveal_cell(self, row, col):
@@ -86,18 +80,17 @@ class Board:
         else:
             curr_cell.cell_btn_object.config(text="", state="disabled", bg="#bdbdbd")
             self.reveal_neighbor(row, col)
-        # TO-DO: Hanlde reveal cell
 
     # Reveal adjecent cells
     def reveal_neighbor(self, row, col):
-        # TO-DO: Handle reveal adjacent cells
         for dr, dc in self.directions:
             nr,nc = row + dr, col + dc
             if 0 <= nr < self.rows and 0 <= nc < self.cols:
                 neighbor = self.grid[nr][nc]
                 if neighbor.cell_btn_object['state'] == 'normal' and not neighbor.is_mine:
                     self.reveal_cell(nr, nc)
-        pass
+
+    # Reveal all bombs 
     def reveal_all_bomb(self):
         for row,col in self.mines_position:
             cell = self.grid[row][col]
