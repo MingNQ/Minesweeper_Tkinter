@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from cell import Cell
 from board import Board
 import settings
@@ -10,10 +11,11 @@ class Minesweeper:
         self.on_close = on_close
         self.difficulty_var = IntVar(value = 2)
         r, c, m = self.get_mode()
-        self.board = Board(None, r, c, m) # FOR TESTING
+        self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.time_elapsed = 0
-        self.timer_id = None # To store the timer ID for cancellation
+        self.timer_id = None # Store the timer ID for cancellation
         self.create_window()
+        self.root.protocol("WM_DELETE_WINDOW", self.exit_game) # Handle window close event
 
     def reload_winfo(self):
         # Get the screen width and height
@@ -23,7 +25,7 @@ class Minesweeper:
         self.root.configure(bg = settings.BLACK) # Change background color
         self.root.title('Minesweeper Game') # Set title for the window
         self.root.resizable(False, False) # Unresizable the window 
-        self.root.overrideredirect(True) # Remove title bar
+        # self.root.overrideredirect(True) # Remove title bar
         self.root.update_idletasks() # Update the window to get the correct size
 
         # Get the window width and height
@@ -108,16 +110,13 @@ class Minesweeper:
         self.time_label.config(
             text = f'{minutes}:{seconds:02d}'
         )
-        if seconds == 5:
-            self.end_game(game_over = True)
-            return
         self.time_elapsed += 1
         self.timer_id = self.root.after(1000, self.update_timer)
 
     # Flags Counter
     def update_flags(self):
         self.flag_label.config(
-            text = f'{self.board.mines:03d}'
+            text = f'{self.board.flags:03d}'
         )
 
     # Main frame
@@ -160,8 +159,7 @@ class Minesweeper:
             font=("Arial", 14, "bold"), 
             width=15, 
             fg=settings.QUITE_WHITE, 
-            bg=settings.QUITE_GRAY, 
-            command = self.select_mode_dialog
+            bg=settings.QUITE_GRAY
         )
         button_mode.pack(pady=20)
 
@@ -187,6 +185,10 @@ class Minesweeper:
         )
         button_exit.pack(pady=20)
 
+        def on_select_mode():
+            setting_dialog.destroy()
+            self.select_mode_dialog()
+
         def on_continue():
             setting_dialog.destroy()
             self.update_timer()
@@ -195,6 +197,7 @@ class Minesweeper:
             setting_dialog.destroy()
             self.exit_game()
 
+        button_mode.config(command=on_select_mode)
         button_continue.config(command=on_continue)
         button_exit.config(command=on_exit)
 
@@ -205,12 +208,14 @@ class Minesweeper:
         for widget in self.root.winfo_children():
             widget.destroy() 
 
-        self.board = Board(None, r, c, m)
+        self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.create_window()
         self.root.grab_set()
 
     # Game Finish
     def end_game(self, game_over = False):
+        self.pause_game()
+
         x = utils.center_width(self.screen_width, settings.RESULT_DIALOG_WIDTH)
         y = utils.center_height(self.screen_height, settings.RESULT_DIALOG_HEIGHT)
         
@@ -300,13 +305,15 @@ class Minesweeper:
         for widget in self.root.winfo_children():
             widget.destroy() 
 
-        self.board = Board(None, r, c, m)
+        self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.create_window()
+
     # Exit Game
     def exit_game(self):
-        self.root.destroy()
-        if self.on_close:
-            self.on_close()
+        if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+            self.root.destroy()
+            if self.on_close:
+                self.on_close()
 
     # Get Mode
     def get_mode(self):

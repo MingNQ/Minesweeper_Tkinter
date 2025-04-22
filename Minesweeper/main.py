@@ -85,6 +85,8 @@ class Home:
         y = utils.center_height(self.screen_height, settings.DIALOG_HEIGHT)
         dialog.geometry(f'{settings.DIALOG_WIDTH}x{settings.DIALOG_HEIGHT}+{x}+{y}')
         dialog.configure(bg=settings.GRAY)
+        dialog.resizable(False, False) # Unresizable the window
+        dialog.overrideredirect(True)
         dialog.grab_set() # Focus on dialog
 
         # Title

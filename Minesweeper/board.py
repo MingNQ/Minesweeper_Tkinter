@@ -1,20 +1,23 @@
 from cell import Cell
-import tkinter
 import random
 import settings
 
 class Board:
-    def __init__(self, root, rows, cols, mines):
+    def __init__(self, root, rows, cols, mines, on_game_over = None, on_update_flag = None):
         self.root = root
         self.rows = rows
         self.cols = cols
         self.mines = mines
+        self.flags = mines
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
         self.mines_position = set()
         self.directions = [(-1, -1), (-1, 0), (-1, 1),  # Top left,Top,Top right
                            (0, -1), (0, 1),  # left , right
                            (1, -1), (1, 0), (1, 1)
                         ]
+        self.on_game_over = on_game_over
+        self.on_update_flag = on_update_flag
+        self.revealed_cells = 0
 
     # Function to create the grid of cells
     def create_grid(self):
@@ -23,6 +26,7 @@ class Board:
                 cell = Cell(self.root)
                 cell.create_button_object(r, c)
                 cell.cell_btn_object.config(command=lambda r=r, c=c: self.reveal_cell(r, c))
+                cell.cell_btn_object.bind('<Button-3>', self.place_flag)  # Right click to place flag
                 self.grid[r][c] = cell
 
         self.place_mines()
@@ -70,16 +74,25 @@ class Board:
             '7': 'turquoise',
             '8': 'darkblue'
         }
+
         if curr_cell.is_mine:
-            curr_cell.cell_btn_object.config(text = '*', bg = 'red')
             self.reveal_all_bomb()
+
+            if self.on_game_over:
+                self.on_game_over(game_over=True)
+
             return
         elif curr_cell.value > 0:
             color = colors.get(str(curr_cell.value),'black')
-            curr_cell.cell_btn_object.config(text=str(curr_cell.value), state="disabled", disabledforeground=color, bg="#bdbdbd",fg=color)
+            curr_cell.cell_btn_object.config(text=str(curr_cell.value), state="disabled", disabledforeground=color, bg=settings.LIGHT_GRAY, fg=color)
         else:
-            curr_cell.cell_btn_object.config(text="", state="disabled", bg="#bdbdbd")
+            curr_cell.cell_btn_object.config(text="", state="disabled", bg=settings.LIGHT_GRAY)
             self.reveal_neighbor(row, col)
+        self.revealed_cells += 1
+
+        if self.flags == 0 and self.revealed_cells == (self.rows * self.cols - self.mines):
+            if self.on_game_over:
+                self.on_game_over()
 
     # Reveal adjecent cells
     def reveal_neighbor(self, row, col):
@@ -94,7 +107,20 @@ class Board:
     def reveal_all_bomb(self):
         for row,col in self.mines_position:
             cell = self.grid[row][col]
-            cell.cell_btn_object.config(text = '*', bg = 'red',state="disabled", disabledforeground='black')
+            cell.cell_btn_object.config(text = '*', bg = settings.RED , state="disabled", disabledforeground='black')
         for row in self.grid:
             for cell in row:
                 cell.cell_btn_object.config(state = "disabled")
+
+    # Place flag on right click
+    def place_flag(self, event):
+        cell = event.widget
+        if cell['text'] == '':
+            cell.config(text='🚩', bg = settings.LIGHT_BLUE, state="disabled")
+            self.flags -= 1
+        elif cell['text'] == '🚩':
+            cell.config(text='', bg = settings.QUITE_GRAY, state="normal")
+            self.flags += 1
+        
+        if self.on_update_flag:
+            self.on_update_flag()

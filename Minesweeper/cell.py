@@ -22,15 +22,7 @@ class Cell:
             height = Cell.CELL_HEIGHT
         )
         btn.grid(row=r, column=c)
-        btn.bind('<Button-3>', self.place_flag) # <Button-3> = right click
         self.cell_btn_object = btn  
-    
-    # Right click event
-    def place_flag(self, event):   
-        if self.cell_btn_object['text'] == '':
-            self.cell_btn_object.config(text='🚩', bg = 'blue', state = tkinter.DISABLED)
-        elif self.cell_btn_object['text'] == '🚩':
-            self.cell_btn_object.config(text='', bg = settings.QUITE_GRAY, state = tkinter.ACTIVE)
 
     def __str__(self):
         return self.cell_btn_object.cget("text")

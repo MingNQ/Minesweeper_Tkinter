@@ -28,10 +28,10 @@ HT0_1 = "End"
 HT0_2 = "Next"
 HT0_3 = "Back"
 
-HT1 = "1. Người chơi nhấp vào một ô để mở nó. Nếu ô đó có mìn, trò chơi đó kết thúc."
+HT1 = "1. Nhấp CHUỘT TRÁI vào một ô để mở nó. Nếu ô đó có mìn, trò chơi đó kết thúc."
 HT2 = "2. Nếu ô đó không có mìn, nó sẽ hiển thị một số từ 1 đến 8, cho biết có bao nhiêu quả bom nằm xung quanh ô đó."
-HT3 = "3. Nếu ô được mở không có số (nghĩa là không mìn lân cận), thì các ô xung quanh cũng sẽ tự động để mở tiếp."
-HT4 = "4. Người chơi có thể cắm cờ vào ô nghi ngờ có mìn để đánh dấu."
+HT3 = "3. Nếu ô được mở không có số (nghĩa là không có mìn lân cận), thì các ô xung quanh cũng sẽ tự động để mở tiếp."
+HT4 = "4. Nhấp CHUỘT PHẢI để cắm cờ vào ô nghi ngờ có mìn."
 HT5 = "5. Trò chơi chiến thắng khi các ô không phải bom được mở và các ô là bom được đánh dấu."
 
 # For Setting Screen
@@ -45,6 +45,7 @@ BLACK = "#000000"
 GRAY = '#cccccc'
 WHITE = "#ffffff"
 RED = "#ff0000"
+LIGHT_BLUE = "#007AFF"
 LIGHT_GRAY = '#d4d4d4'
 QUITE_GRAY = '#535353'
 LIGHT_BLACK = '#151515'
