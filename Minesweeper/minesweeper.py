@@ -19,7 +19,7 @@ class Minesweeper:
         self.root.protocol("WM_DELETE_WINDOW", self.exit_game) # Handle window close event
 
         if self.auto_play:
-            self.root.after(1000, self.board.auto_play)
+            self.root.after(2000, self.board.auto_play)
 
     def reload_winfo(self):
         # Get the screen width and height
@@ -242,7 +242,7 @@ class Minesweeper:
         if game_over:
             trophy_img = PhotoImage(file="./assets/gameover_icon.png")
             trophy_img = trophy_img.subsample(2, 2)
-            congrat_content = "BETTER LUCK NEXT"
+            congrat_content = "BETTER LUCK NEXT TIME!"
         else:
             trophy_img = PhotoImage(file="./assets/victory_icon.png")
             congrat_content = "CONGRATULATION GREATEST PLAYER"
