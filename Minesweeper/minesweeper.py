@@ -193,12 +193,15 @@ class Minesweeper:
         def on_select_mode():
             setting_dialog.destroy()
             self.select_mode_dialog()
-            self.board.auto_play()
+            if self.auto_play:
+                self.board.auto_play()
 
         def on_continue():
             setting_dialog.destroy()
             self.update_timer()
-            self.board.auto_play()
+
+            if self.auto_play:
+                self.board.auto_play()
             
         def on_exit():
             setting_dialog.destroy()
@@ -327,6 +330,7 @@ class Minesweeper:
             self.root.destroy()
             if self.on_close:
                 self.on_close()
+        self.update_timer() # Continue the timer if the game is not closed
 
     # Get Mode
     def get_mode(self):
