@@ -98,6 +98,10 @@ class Board:
         # Do action if exist
         if actions:
             action = actions.pop(0)
+
+            if not self.auto_playing:
+                return
+
             if action[0] == 'flag':
                 self.place_flag(action[1].cell_btn_object)
             elif action[0] == 'reveal':
