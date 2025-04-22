@@ -74,7 +74,7 @@ class Minesweeper:
         self.update_timer()
 
         # Setting Button
-        self.setting_icon = PhotoImage(file='./assets/setting_icon.png')
+        self.setting_icon = PhotoImage(file=utils.resoure_path('./assets/setting_icon.png'))
         self.setting_icon = self.setting_icon.subsample(3, 3)
         self.setting_button = Button(
             top_frame,
@@ -96,7 +96,7 @@ class Minesweeper:
         self.update_flags()
 
         # Mode
-        self.label_mode_icon = PhotoImage(file='./assets/emotion_icon.png')
+        self.label_mode_icon = PhotoImage(file=utils.resoure_path('./assets/emotion_icon.png'))
         self.label_mode_icon = self.label_mode_icon.subsample(3, 3)
         self.label_mode = Button(
             top_frame, 
@@ -243,11 +243,11 @@ class Minesweeper:
         congrat_content = None
 
         if game_over:
-            trophy_img = PhotoImage(file="./assets/gameover_icon.png")
+            trophy_img = PhotoImage(file=utils.resoure_path("./assets/gameover_icon.png"))
             trophy_img = trophy_img.subsample(2, 2)
             congrat_content = "BETTER LUCK NEXT TIME!"
         else:
-            trophy_img = PhotoImage(file="./assets/victory_icon.png")
+            trophy_img = PhotoImage(file=utils.resoure_path("./assets/victory_icon.png"))
             congrat_content = "CONGRATULATION GREATEST PLAYER"
 
         trophy_label = Label(result_dialog, image=trophy_img, bg=settings.GRAY)

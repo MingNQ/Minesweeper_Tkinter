@@ -23,7 +23,7 @@ class Home:
     
     # Create the home screen UI
     def create_home_ui(self):
-        self.app_icon = PhotoImage(file='./assets/app_logo.png')
+        self.app_icon = PhotoImage(file=utils.resoure_path('./assets/app_logo.png'))
         self.app_icon = self.app_icon.subsample(1, 1)
         app_logo_label = Label(self.root, image=self.app_icon)
         app_logo_label.pack(pady=50)
