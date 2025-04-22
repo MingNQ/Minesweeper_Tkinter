@@ -27,7 +27,6 @@ Because of project's limitation, you can just run the game by cloning this proje
 git clone https://github.com/MingNQ/Minesweeper_Tkinter.git
 ```
 
-## Run Project
 - Open folder store file **main.py**
 - Run this command
 
@@ -52,3 +51,7 @@ after
 ```
 python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
 ```
+
+## Run Project
+
+Execute the **main.exe** file to play game. Have fun! 💣👨‍💻🚩 
