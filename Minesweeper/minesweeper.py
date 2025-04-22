@@ -10,7 +10,7 @@ class Minesweeper:
         self.root = root
         self.auto_play = auto_play
         self.on_close = on_close
-        self.difficulty_var = IntVar(value = 2)
+        self.difficulty_var = IntVar(value = 1)
         r, c, m = self.get_mode()
         self.board = Board(None, r, c, m, on_game_over = self.end_game, on_update_flag = self.update_flags)
         self.time_elapsed = 0
@@ -19,7 +19,7 @@ class Minesweeper:
         self.root.protocol("WM_DELETE_WINDOW", self.exit_game) # Handle window close event
 
         if self.auto_play:
-            self.root.after(2000, self.board.auto_play)
+            self.root.after(3000, self.board.auto_play)
 
     def reload_winfo(self):
         # Get the screen width and height
@@ -136,7 +136,6 @@ class Minesweeper:
     # Setting Command
     def setting_onclick(self):
         self.pause_game()
-        self.board.auto_playing = False
 
         x = utils.center_width(self.screen_width, settings.SETTING_DIALOG_WIDTH)
         y = utils.center_height(self.screen_height, settings.SETTING_DIALOG_HEIGHT)
@@ -194,14 +193,14 @@ class Minesweeper:
             setting_dialog.destroy()
             self.select_mode_dialog()
             if self.auto_play:
-                self.board.auto_play()
+                self.root.after(1000, self.board.auto_play)
 
         def on_continue():
             setting_dialog.destroy()
             self.update_timer()
 
             if self.auto_play:
-                self.board.auto_play()
+                self.root.after(1000, self.board.auto_play)
             
         def on_exit():
             setting_dialog.destroy()
@@ -223,7 +222,7 @@ class Minesweeper:
         self.root.grab_set()
 
         if self.auto_play:
-            self.root.after(1000, self.board.auto_play)
+            self.root.after(3000, self.board.auto_play)
 
     # Game Finish
     def end_game(self, game_over = False):
@@ -307,6 +306,7 @@ class Minesweeper:
 
     # Pause Game
     def pause_game(self):
+        self.board.auto_playing = False
         if self.timer_id:
             self.root.after_cancel(self.timer_id)
             self.timer_id = None
@@ -322,7 +322,7 @@ class Minesweeper:
         self.create_window()
 
         if self.auto_play:
-            self.root.after(1000, self.board.auto_play)
+            self.root.after(3000, self.board.auto_play)
 
     # Exit Game
     def exit_game(self):
@@ -394,6 +394,9 @@ class Minesweeper:
             mode_dialog.destroy()
             self.root.grab_set()
             self.update_timer()
+
+            if self.auto_play:
+                self.root.after(1000, self.board.auto_play)
 
         def new_game_click():
             mode_dialog.destroy()
