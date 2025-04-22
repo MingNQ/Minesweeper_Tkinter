@@ -10,6 +10,7 @@ class Cell:
         self.value = 0
         self.state = tkinter.ACTIVE
         self.is_mine = is_mine
+        self.is_flagged = False
         self.root = root
         self.cell_btn_object = None
     
