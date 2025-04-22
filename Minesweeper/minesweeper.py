@@ -330,6 +330,7 @@ class Minesweeper:
             self.root.destroy()
             if self.on_close:
                 self.on_close()
+            return
         self.update_timer() # Continue the timer if the game is not closed
 
     # Get Mode
