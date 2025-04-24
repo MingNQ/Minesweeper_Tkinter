@@ -19,7 +19,7 @@ class Minesweeper:
         self.root.protocol("WM_DELETE_WINDOW", self.exit_game) # Handle window close event
 
         if self.auto_play:
-            self.root.after(3000, self.board.auto_play)
+            self.root.after(1500, self.board.auto_play)
 
     def reload_winfo(self):
         # Get the screen width and height
@@ -222,7 +222,7 @@ class Minesweeper:
         self.root.grab_set()
 
         if self.auto_play:
-            self.root.after(3000, self.board.auto_play)
+            self.root.after(1500, self.board.auto_play)
 
     # Game Finish
     def end_game(self, game_over = False):
@@ -322,7 +322,7 @@ class Minesweeper:
         self.create_window()
 
         if self.auto_play:
-            self.root.after(3000, self.board.auto_play)
+            self.root.after(1500, self.board.auto_play)
 
     # Exit Game
     def exit_game(self):
