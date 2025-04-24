@@ -43,6 +43,14 @@ class Board:
 
         def is_flagged(cell):
             return cell.cell_btn_object['text'] == State.FLAGGED
+        
+        def calculate_mine_probability(cell):
+            neighbors = self.get_neighbors(cell.cell_btn_object.grid_info()['row'], cell.cell_btn_object.grid_info()['column'])
+            unopened = [c for c in neighbors if not is_open(c) and not is_flagged(c)]
+            flagged = [c for c in neighbors if is_flagged(c)]
+            if len(unopened) == 0:
+                return 1  # Không có ô chưa mở, xác suất là mìn = 1
+            return (cell.value - len(flagged)) / len(unopened)
 
         changed = False
         actions = []
@@ -73,23 +81,43 @@ class Board:
 
         # Guess 
         if not changed:
-            frontier = []
-            fallback = []
+            corner = [(0, 0), (0, self.cols - 1), (self.rows - 1, 0), (self.rows - 1, self.cols - 1)]
+            random.shuffle(corner)
+            for r, c in corner:
+                cell = self.grid[r][c]
+                if (r, c) in self.mines_position:
+                    continue
 
-            for row in range(self.rows):
-                for col in range(self.cols):
+                if not is_open(cell) and not is_flagged(cell):
+                    actions.append(('reveal', r, c))
+                    break
+
+            middle_rows = range(self.rows // 3, 2 * self.rows // 3)
+            middle_cols = range(self.cols // 3, 2 * self.cols // 3)
+            middle_cells = []
+            for row in middle_rows:
+                for col in middle_cols:
                     cell = self.grid[row][col]
                     if is_open(cell) or is_flagged(cell):
                         continue
-                    neighbors = self.get_neighbors(row, col)
-                    if any(is_open(n) for n in neighbors):
-                        frontier.append(cell)
-                    else:
-                        fallback.append(cell)
+                    prob = calculate_mine_probability(cell)
+                    middle_cells.append((prob, cell))
+                
+            candidates = [] if not middle_cells else middle_cells
+            if not candidates:
+                for row in range(self.rows):
+                    for col in range(self.cols):
+                        cell = self.grid[row][col]
+                        if is_open(cell) or is_flagged(cell):
+                            continue
+                        prob = calculate_mine_probability(cell)
+                        candidates.append((prob, cell))
 
-            candidates = frontier if frontier else fallback
             if candidates:
-                guess = random.choice(candidates)
+                candidates.sort(key=lambda x: x[0])
+                min_prop = candidates[0][0]
+                candidates = [c for c in candidates if c[0] == min_prop]
+                guess = random.choice(candidates)[1]
                 r = guess.cell_btn_object.grid_info()['row']
                 c = guess.cell_btn_object.grid_info()['column']
                 actions.append(('reveal', r, c))
